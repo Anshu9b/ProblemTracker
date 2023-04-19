@@ -1,0 +1,39 @@
+ double frogPosition(int n, vector<vector<int>>& edges, int t, int target) 
+    {
+        vector<vector<int>>adj(n+1);
+        for(int i=0;i<edges.size();i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        // q ~ {{node,timer},probability}
+        queue<pair<pair<int, int>,double>>q;
+        vector<int> visited(n+1,0);
+        q.push({{1,t},1.0});
+        visited[1]=1;
+        while(!q.empty()){
+            int frontNode = q.front().first.first;
+            int timer = q.front().first.second;
+            double probability = q.front().second;
+            int countUnvisited=0;
+            for(auto neighbour : adj[frontNode])if(!visited[neighbour])countUnvisited++;
+            if(frontNode==target){
+                if(countUnvisited==0 || timer==0)return probability;
+                else return 0;
+            }
+            q.pop();
+            if(timer>0){
+                for(auto neighbour : adj[frontNode]){
+                    if(!visited[neighbour]){
+                        visited[neighbour]=1;
+                        if(countUnvisited!=0){
+                            q.push({{neighbour,timer-1},probability/countUnvisited});
+                        }
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+        

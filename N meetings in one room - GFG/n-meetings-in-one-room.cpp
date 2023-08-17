@@ -15,12 +15,12 @@ class Solution
         {
             v.push_back( {start[i], end[i]});
         }
-        auto cmp= [&]( auto &a, auto &b )
+        auto cmp= [&](pair<int,int> &a,  pair <int,int> &b )
         {
          return a.second<b.second;   
             
         };
-        sort( v.begin(), v.end(), cmp);
+        sort(v.begin(), v.end(), cmp);
         int last_end=-1, ans=0;
         for( int i=0; i<v.size();i++)
         {
